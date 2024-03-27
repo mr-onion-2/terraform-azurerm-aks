@@ -67,16 +67,16 @@ module "aks" {
   confidential_computing = {
     sgx_quote_helper_enabled = true
   }
-  disk_encryption_set_id                  = azurerm_disk_encryption_set.des.id
-  enable_auto_scaling                     = true
-  enable_host_encryption                  = true
-  http_application_routing_enabled        = true
-  ingress_application_gateway_enabled     = true
-  ingress_application_gateway_name        = "${random_id.prefix.hex}-agw"
-  ingress_application_gateway_subnet_cidr = "10.52.1.0/24"
-  local_account_disabled                  = true
-  log_analytics_workspace_enabled         = true
-  cluster_log_analytics_workspace_name    = random_id.name.hex
+  disk_encryption_set_id = azurerm_disk_encryption_set.des.id
+  enable_auto_scaling    = true
+  enable_host_encryption = true
+  green_field_application_gateway_for_ingress = {
+    name        = "${random_id.prefix.hex}-agw"
+    subnet_cidr = "10.52.1.0/24"
+  }
+  local_account_disabled               = true
+  log_analytics_workspace_enabled      = true
+  cluster_log_analytics_workspace_name = random_id.name.hex
   maintenance_window = {
     allowed = [
       {
@@ -102,9 +102,9 @@ module "aks" {
   net_profile_service_cidr          = "10.0.0.0/16"
   network_plugin                    = "azure"
   network_policy                    = "azure"
+  node_os_channel_upgrade           = "NodeImage"
   os_disk_size_gb                   = 60
   private_cluster_enabled           = true
-  public_network_access_enabled     = false
   rbac_aad                          = true
   rbac_aad_managed                  = true
   role_based_access_control_enabled = true
